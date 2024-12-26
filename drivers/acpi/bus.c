@@ -32,6 +32,8 @@
 #include <linux/suspend.h>
 #include <linux/prmt.h>
 
+#include <uacpi/uacpi.h>
+
 #include "internal.h"
 
 struct acpi_device *acpi_root;
@@ -1337,6 +1339,16 @@ static int __init acpi_bus_init(void)
 {
 	int result;
 	acpi_status status;
+
+	uacpi_status ustatus = uacpi_initialize(0);
+	if (ustatus != UACPI_STATUS_OK) {
+		pr_err("Unable to initialize uACPI: %s\n", uacpi_status_to_string(ustatus));
+	} else {
+		ustatus = uacpi_namespace_load();
+
+		if (ustatus != UACPI_STATUS_OK)
+			pr_err("Unable to load uACPI namespace: %s\n", uacpi_status_to_string(ustatus));
+	}
 
 	acpi_os_initialize1();
 
