@@ -15,6 +15,13 @@ endif
 
 obj-$(CONFIG_ACPI)		+= tables.o
 
+obj-y += uacpi/
+
+ccflags-y += -DUACPI_OVERRIDE_LIBC
+ccflags-y += -DUACPI_OVERRIDE_TYPES
+ccflags-y += -DUACPI_FORMATTED_LOGGING
+ccflags-y += -DUACPI_KERNEL_INITIALIZATION
+
 #
 # ACPI Core Subsystem (Interpreter)
 #
